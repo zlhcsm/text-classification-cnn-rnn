@@ -1,6 +1,5 @@
 # Text Classification with CNN and RNN
 
-使用卷积神经网络以及循环神经网络进行中文文本分类
 
 CNN做句子分类的论文可以参看: [Convolutional Neural Networks for Sentence Classification](https://arxiv.org/abs/1408.5882)
 
