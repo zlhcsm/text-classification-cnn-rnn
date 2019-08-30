@@ -8,10 +8,12 @@ class TCNNConfig(object):
 
     embedding_dim = 64  # 词向量维度
     seq_length = 600  # 序列长度
-    num_classes = 10  # 类别数
+    # lei num_classes = 10  # 类别数
+    num_classes = 6  # 类别数
     num_filters = 256  # 卷积核数目
     kernel_size = 5  # 卷积核尺寸
-    vocab_size = 5000  # 词汇表达小
+    # lei vocab_size = 5000  # 词汇表达小
+    vocab_size = 200  # 词汇表达小
 
     hidden_dim = 128  # 全连接层神经元
 
@@ -19,10 +21,13 @@ class TCNNConfig(object):
     learning_rate = 1e-3  # 学习率
 
     batch_size = 64  # 每批训练大小
-    num_epochs = 10  # 总迭代轮次
+    num_epochs = 100  # 总迭代轮次
+    # lei num_epochs = 10  # 总迭代轮次
 
-    print_per_batch = 100  # 每多少轮输出一次结果
-    save_per_batch = 10  # 每多少轮存入tensorboard
+    print_per_batch = 10  # 每多少轮输出一次结果
+    save_per_batch = 1  # 每多少轮存入tensorboard
+    # print_per_batch = 100  # 每多少轮输出一次结果
+    # save_per_batch = 10  # 每多少轮存入tensorboard
 
 
 class TextCNN(object):

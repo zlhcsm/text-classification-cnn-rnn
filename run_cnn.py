@@ -16,10 +16,11 @@ from cnn_model import TCNNConfig, TextCNN
 from data.cnews_loader import read_vocab, read_category, batch_iter, process_file, build_vocab
 
 base_dir = 'data/cnews'
-train_dir = os.path.join(base_dir, 'cnews.train.txt')
-test_dir = os.path.join(base_dir, 'cnews.test.txt')
-val_dir = os.path.join(base_dir, 'cnews.val.txt')
-vocab_dir = os.path.join(base_dir, 'cnews.vocab.txt')
+# lei train_dir = os.path.join(base_dir, 'cnews.train.txt')
+train_dir = os.path.join(base_dir, 'lei_train_data.txt')
+test_dir = os.path.join(base_dir, 'lei_test_data.txt')
+val_dir = os.path.join(base_dir, 'lei_val_data.txt')
+vocab_dir = os.path.join(base_dir, 'cnews.train_vocab.txt')
 
 save_dir = 'checkpoints/textcnn'
 save_path = os.path.join(save_dir, 'best_validation')  # 最佳验证结果保存路径
@@ -192,6 +193,7 @@ if __name__ == '__main__':
         build_vocab(train_dir, vocab_dir, config.vocab_size)
     categories, cat_to_id = read_category()
     words, word_to_id = read_vocab(vocab_dir)
+    print(cat_to_id)
     config.vocab_size = len(words)
     model = TextCNN(config)
 

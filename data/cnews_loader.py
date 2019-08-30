@@ -9,7 +9,7 @@ import tensorflow.keras as kr
 if sys.version_info[0] > 2:
     is_py3 = True
 else:
-    reload(sys)
+    # reload(sys)
     sys.setdefaultencoding("utf-8")
     is_py3 = False
 
@@ -55,7 +55,7 @@ def read_file(filename):
     return contents, labels
 
 
-def build_vocab(train_dir, vocab_dir, vocab_size=5000):
+def build_vocab(train_dir, vocab_dir, vocab_size):
     """根据训练集构建词汇表，存储"""
     data_train, _ = read_file(train_dir)
 
@@ -83,7 +83,8 @@ def read_vocab(vocab_dir):
 
 def read_category():
     """读取分类目录，固定"""
-    categories = ['体育', '财经', '房产', '家居', '教育', '科技', '时尚', '时政', '游戏', '娱乐']
+    #lei categories = ['体育', '财经', '房产', '家居', '教育', '科技', '时尚', '时政', '游戏', '娱乐']
+    categories = ['孕产次', '胎位', '孕周', '高危因素', '结果', '阿氏评分']
 
     categories = [native_content(x) for x in categories]
 
