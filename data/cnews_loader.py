@@ -2,7 +2,7 @@
 
 import sys
 from collections import Counter
-
+import json
 import numpy as np
 import tensorflow.keras as kr
 
@@ -49,6 +49,7 @@ def read_file(filename):
                 label, content = line.strip().split('\t')
                 if content:
                     contents.append(list(native_content(content)))
+                    # 变成整数
                     labels.append(native_content(label))
             except:
                 pass
@@ -85,13 +86,21 @@ def read_category():
     """读取分类目录，固定"""
     #lei categories = ['体育', '财经', '房产', '家居', '教育', '科技', '时尚', '时政', '游戏', '娱乐']
     categories = ['孕产次', '胎位', '孕周', '高危因素', '结果', '阿氏评分']
-
     categories = [native_content(x) for x in categories]
 
     cat_to_id = dict(zip(categories, range(len(categories))))
 
     return categories, cat_to_id
 
+
+def id_to_category():
+    """读取分类目录，固定"""
+    # lei categories = ['体育', '财经', '房产', '家居', '教育', '科技', '时尚', '时政', '游戏', '娱乐']
+    categories = ['孕产次', '胎位', '孕周', '高危因素', '结果', '阿氏评分']
+    categories = [native_content(x) for x in categories]
+    s = map(str, range(len(categories)))
+    id_to_cat = dict(zip(s, categories))
+    return id_to_cat
 
 def to_words(content, words):
     """将id表示的内容转换为文字"""
@@ -101,7 +110,6 @@ def to_words(content, words):
 def process_file(filename, word_to_id, cat_to_id, max_length=600):
     """将文件转换为id表示"""
     contents, labels = read_file(filename)
-
     data_id, label_id = [], []
     for i in range(len(contents)):
         data_id.append([word_to_id[x] for x in contents[i] if x in word_to_id])
@@ -127,3 +135,26 @@ def batch_iter(x, y, batch_size=64):
         start_id = i * batch_size
         end_id = min((i + 1) * batch_size, data_len)
         yield x_shuffle[start_id:end_id], y_shuffle[start_id:end_id]
+
+
+def extra_result_file(test_dir, y):
+    get_data = []
+    with open_file(test_dir) as f:
+        for line in f:
+            label, content = line.strip().split('\t')
+            get_data.append(content)
+    id_to_cate = id_to_category()
+    cate_list = []
+    for index in y:
+        cate_list.append(id_to_cate[str(index)])
+    zipped = dict(zip(cate_list, get_data))
+
+    with open('write.json', 'w', encoding="utf-8") as f:
+        json.dump(zipped, f, ensure_ascii=False)
+    #out_std_data()
+
+
+def out_std_data():
+    with open('write.json', 'r', encoding='utf8') as f:
+        data = json.load(f)
+    print(data)

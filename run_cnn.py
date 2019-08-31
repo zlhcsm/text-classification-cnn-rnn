@@ -13,12 +13,13 @@ import tensorflow as tf
 from sklearn import metrics
 
 from cnn_model import TCNNConfig, TextCNN
-from data.cnews_loader import read_vocab, read_category, batch_iter, process_file, build_vocab
+from data.cnews_loader import read_vocab, read_category, batch_iter, extra_result_file, process_file, build_vocab
 
 base_dir = 'data/cnews'
 # lei train_dir = os.path.join(base_dir, 'cnews.train.txt')
 train_dir = os.path.join(base_dir, 'lei_train_data.txt')
-test_dir = os.path.join(base_dir, 'lei_test_data.txt')
+test_dir = os.path.join(base_dir, 'show_data.txt')
+# test_dir = os.path.join(base_dir, 'lei_test_data.txt')
 val_dir = os.path.join(base_dir, 'lei_val_data.txt')
 vocab_dir = os.path.join(base_dir, 'cnews.train_vocab.txt')
 
@@ -159,8 +160,10 @@ def test():
     data_len = len(x_test)
     num_batch = int((data_len - 1) / batch_size) + 1
 
+
     y_test_cls = np.argmax(y_test, 1)
     y_pred_cls = np.zeros(shape=len(x_test), dtype=np.int32)  # 保存预测结果
+
     for i in range(num_batch):  # 逐批次处理
         start_id = i * batch_size
         end_id = min((i + 1) * batch_size, data_len)
@@ -169,10 +172,10 @@ def test():
             model.keep_prob: 1.0
         }
         y_pred_cls[start_id:end_id] = session.run(model.y_pred_cls, feed_dict=feed_dict)
-
+        extra_result_file(test_dir, y_pred_cls)  # 将结果保存在文件中
     # 评估
     print("Precision, Recall and F1-Score...")
-    print(metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories))
+    #print(metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories))
 
     # 混淆矩阵
     print("Confusion Matrix...")
@@ -193,7 +196,6 @@ if __name__ == '__main__':
         build_vocab(train_dir, vocab_dir, config.vocab_size)
     categories, cat_to_id = read_category()
     words, word_to_id = read_vocab(vocab_dir)
-    print(cat_to_id)
     config.vocab_size = len(words)
     model = TextCNN(config)
 
