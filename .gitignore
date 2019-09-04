@@ -1,5 +1,9 @@
 .DS_Store
-data/cnews
+data/cnews/cnews.test.txt
+data/cnews/cnews.train.txt
+data/cnews/cnews.train_vocab.txt
+data/cnews/cnews.val.txt
+data/cnews/cnews.vocab.txt
 data/thucnews
 __pycache__
 cnn_keras.py
@@ -8,3 +12,4 @@ cnn_keras.py
 checkpoints
 tensorboard
 .vscode
+write.json

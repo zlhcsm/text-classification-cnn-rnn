@@ -5,6 +5,7 @@ from collections import Counter
 import json
 import numpy as np
 import tensorflow.keras as kr
+from collections import defaultdict
 
 if sys.version_info[0] > 2:
     is_py3 = True
@@ -147,8 +148,10 @@ def extra_result_file(test_dir, y):
     cate_list = []
     for index in y:
         cate_list.append(id_to_cate[str(index)])
-    zipped = dict(zip(cate_list, get_data))
-
+    zipped = defaultdict(list)
+    for (key, value) in zip(cate_list, get_data):
+        zipped[key].append(value);
+    print(zipped)
     with open('write.json', 'w', encoding="utf-8") as f:
         json.dump(zipped, f, ensure_ascii=False)
     #out_std_data()
