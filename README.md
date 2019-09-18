@@ -1,3 +1,4 @@
+#<font color="red">Tips:要测试功能务必请跳转至`char_achi`分支</font>
 # Text Classification with CNN and RNN
 
 使用卷积神经网络以及循环神经网络进行中文文本分类
