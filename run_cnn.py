@@ -7,11 +7,10 @@ import os
 import sys
 import time
 from datetime import timedelta
-
 import numpy as np
 import tensorflow as tf
 from sklearn import metrics
-
+from data.process_data import process_data as pd
 from cnn_model import TCNNConfig, TextCNN
 from data.cnews_loader import read_vocab, read_category, batch_iter, extra_result_file, process_file, build_vocab
 
@@ -188,9 +187,24 @@ def test():
     print("Time usage:", time_dif)
 
 
+# if __name__ == '__main__':
+#     if len(sys.argv) != 2 or sys.argv[1] not in ['train', 'test']:
+#         raise ValueError("""usage: python run_cnn.py [train / test]""")
+#
+#     print('Configuring CNN model...')
+#     config = TCNNConfig()
+#     if not os.path.exists(vocab_dir):  # 如果不存在词汇表，重建
+#         build_vocab(train_dir, vocab_dir, config.vocab_size)
+#     categories, cat_to_id = read_category()
+#     words, word_to_id = read_vocab(vocab_dir)
+#     config.vocab_size = len(words)
+#     model = TextCNN(config)
+#
+#     if sys.argv[1] == 'train':
+#         train()
+#     else:
+#         test()
 if __name__ == '__main__':
-    if len(sys.argv) != 2 or sys.argv[1] not in ['train', 'test']:
-        raise ValueError("""usage: python run_cnn.py [train / test]""")
 
     print('Configuring CNN model...')
     config = TCNNConfig()
@@ -200,8 +214,5 @@ if __name__ == '__main__':
     words, word_to_id = read_vocab(vocab_dir)
     config.vocab_size = len(words)
     model = TextCNN(config)
-
-    if sys.argv[1] == 'train':
-        train()
-    else:
-        test()
+    pd()
+    test()
