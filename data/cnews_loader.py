@@ -5,6 +5,8 @@ from collections import Counter
 import json
 import numpy as np
 import tensorflow.keras as kr
+from collections import defaultdict
+import post_process as pp
 
 if sys.version_info[0] > 2:
     is_py3 = True
@@ -84,7 +86,7 @@ def read_vocab(vocab_dir):
 
 def read_category():
     """读取分类目录，固定"""
-    #lei categories = ['体育', '财经', '房产', '家居', '教育', '科技', '时尚', '时政', '游戏', '娱乐']
+    # lei categories = ['体育', '财经', '房产', '家居', '教育', '科技', '时尚', '时政', '游戏', '娱乐']
     categories = ['孕产次', '胎位', '孕周', '高危因素', '结果', '阿氏评分']
     categories = [native_content(x) for x in categories]
 
@@ -101,6 +103,7 @@ def id_to_category():
     s = map(str, range(len(categories)))
     id_to_cat = dict(zip(s, categories))
     return id_to_cat
+
 
 def to_words(content, words):
     """将id表示的内容转换为文字"""
@@ -137,6 +140,7 @@ def batch_iter(x, y, batch_size=64):
         yield x_shuffle[start_id:end_id], y_shuffle[start_id:end_id]
 
 
+# 用来处理结果数据
 def extra_result_file(test_dir, y):
     get_data = []
     with open_file(test_dir) as f:
@@ -147,14 +151,21 @@ def extra_result_file(test_dir, y):
     cate_list = []
     for index in y:
         cate_list.append(id_to_cate[str(index)])
-    zipped = dict(zip(cate_list, get_data))
+
+
+    # defaultdict类的初始化函数接受一个类型作为参数，当所访问的键不存在的时候，可以实例化一个值作为默认值
+    zipped = defaultdict(list)
+    for (key, value) in zip(cate_list, get_data):
+        if (key == "孕产次") | (key == "孕周")|(key == "阿氏评分"):
+            vals = pp.process_number(value)
+            for v in vals:
+                zipped[key].append(v)
+        else:
+            zipped[key].append(value)
+    print("--------------打印出zipped结果-------------")
     print(zipped)
+    print("------------------OVER--------------------")
+
+
     with open('write.json', 'w', encoding="utf-8") as f:
         json.dump(zipped, f, ensure_ascii=False)
-    #out_std_data()
-
-
-def out_std_data():
-    with open('write.json', 'r', encoding='utf8') as f:
-        data = json.load(f)
-    print(data)
