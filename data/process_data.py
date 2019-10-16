@@ -1,18 +1,32 @@
 import time
 import re
 
-paragraph = "子宫下段剖宫产；孕次5产次1 孕39周 枕左前剖宫产；巨大儿；胎膜早破；\
-高龄初产妇妊娠监督；足月单活胎；"
+
+def process_data():
+    txt = load_txt()  # 加载文件
+    sen_list = phrasing(txt)  # 分句
+    gen_used_input(sen_list)  # 生成json
+
+
+def load_txt():
+    txt = ''
+    with open('data/lianyin.txt', 'r', encoding='utf8') as ly:
+        txt = ly.read()
+    return txt
 
 
 def phrasing(par):
-    sentences = re.split('[；;,\s]', par)
+    sentences = re.split('[；;,，！!.。\s]', par)
     while '' in sentences:
         sentences.remove('')
+    print("-------切分好的句子如下：--------")
+    for line in sentences:
+        print(line)
     return sentences
 
 
-def save_sens(sen_list):
+# 用来生成可用的输入信息
+def gen_used_input(sen_list):
     with open('data/cnews/show_data.txt', 'w', encoding='utf8') as file_object:
         for sen in sen_list:
             file_object.write('孕产次')
@@ -20,4 +34,8 @@ def save_sens(sen_list):
             file_object.write(sen)
             file_object.write('\n')
 
-#print("结束于：" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+
+# print("结束于：" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+
+# 测试
+# process_data()
