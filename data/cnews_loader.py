@@ -148,7 +148,7 @@ def extra_result_file(test_dir, y):
     for index in y:
         cate_list.append(id_to_cate[str(index)])
     zipped = dict(zip(cate_list, get_data))
-
+    print(zipped)
     with open('write.json', 'w', encoding="utf-8") as f:
         json.dump(zipped, f, ensure_ascii=False)
     #out_std_data()

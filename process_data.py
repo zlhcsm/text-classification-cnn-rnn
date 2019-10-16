@@ -12,12 +12,12 @@ def phrasing(par):
     return sentences
 
 
-sen_list = phrasing(paragraph)
-with open('data/cnews/show_data.txt', 'w', encoding='utf8') as file_object:
-    for sen in sen_list:
-        file_object.write('孕产次')
-        file_object.write('\t')
-        file_object.write(sen)
-        file_object.write('\n')
+def save_sens(sen_list):
+    with open('data/cnews/show_data.txt', 'w', encoding='utf8') as file_object:
+        for sen in sen_list:
+            file_object.write('孕产次')
+            file_object.write('\t')
+            file_object.write(sen)
+            file_object.write('\n')
 
-print("结束于：" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+#print("结束于：" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
