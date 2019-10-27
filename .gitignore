@@ -11,3 +11,4 @@ cnn_keras.py
 *.pyc
 .vscode
 write.json
+test.py
