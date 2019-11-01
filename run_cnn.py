@@ -93,7 +93,7 @@ def train():
     total_batch = 0  # 总批次
     best_acc_val = 0.0  # 最佳验证集准确率
     last_improved = 0  # 记录上一次提升批次
-    require_improvement = 1000  # 如果超过1000轮未提升，提前结束训练
+    require_improvement = 100  # 如果超过1000轮未提升，提前结束训练
 
     flag = False
     for epoch in range(config.num_epochs):
@@ -187,24 +187,9 @@ def test():
     print("Time usage:", time_dif)
 
 
-# if __name__ == '__main__':
-#     if len(sys.argv) != 2 or sys.argv[1] not in ['train', 'test']:
-#         raise ValueError("""usage: python run_cnn.py [train / test]""")
-#
-#     print('Configuring CNN model...')
-#     config = TCNNConfig()
-#     if not os.path.exists(vocab_dir):  # 如果不存在词汇表，重建
-#         build_vocab(train_dir, vocab_dir, config.vocab_size)
-#     categories, cat_to_id = read_category()
-#     words, word_to_id = read_vocab(vocab_dir)
-#     config.vocab_size = len(words)
-#     model = TextCNN(config)
-#
-#     if sys.argv[1] == 'train':
-#         train()
-#     else:
-#         test()
 if __name__ == '__main__':
+    if len(sys.argv) != 2 or sys.argv[1] not in ['train', 'test']:
+        raise ValueError("""usage: python run_cnn.py [train / test]""")
 
     print('Configuring CNN model...')
     config = TCNNConfig()
@@ -214,5 +199,20 @@ if __name__ == '__main__':
     words, word_to_id = read_vocab(vocab_dir)
     config.vocab_size = len(words)
     model = TextCNN(config)
-    pd()
-    test()
+
+    if sys.argv[1] == 'train':
+        train()
+    else:
+        test()
+# if __name__ == '__main__':
+#
+#     print('Configuring CNN model...')
+#     config = TCNNConfig()
+#     if not os.path.exists(vocab_dir):  # 如果不存在词汇表，重建
+#         build_vocab(train_dir, vocab_dir, config.vocab_size)
+#     categories, cat_to_id = read_category()
+#     words, word_to_id = read_vocab(vocab_dir)
+#     config.vocab_size = len(words)
+#     model = TextCNN(config)
+#     pd()
+#     test()
