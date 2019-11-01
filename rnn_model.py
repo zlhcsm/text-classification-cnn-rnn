@@ -9,7 +9,9 @@ class TRNNConfig(object):
     # 模型参数
     embedding_dim = 64      # 词向量维度
     seq_length = 600        # 序列长度
-    num_classes = 10        # 类别数
+    #lei num_classes = 10        # 类别数
+    #lei vocab_size = 5000  # 词汇表达小
+    num_classes = 6        # 类别数
     vocab_size = 5000       # 词汇表达小
 
     num_layers= 2           # 隐藏层层数
@@ -77,6 +79,7 @@ class TextRNN(object):
             self.logits = tf.layers.dense(fc, self.config.num_classes, name='fc2')
             self.y_pred_cls = tf.argmax(tf.nn.softmax(self.logits), 1)  # 预测类别
 
+        # 给变量加前缀，相当于分类管理，模块化。
         with tf.name_scope("optimize"):
             # 损失函数，交叉熵
             cross_entropy = tf.nn.softmax_cross_entropy_with_logits(logits=self.logits, labels=self.input_y)

@@ -7,19 +7,20 @@ import os
 import sys
 import time
 from datetime import timedelta
-
 import numpy as np
 import tensorflow as tf
 from sklearn import metrics
-
+from data.process_data import process_data as pd
 from cnn_model import TCNNConfig, TextCNN
-from data.cnews_loader import read_vocab, read_category, batch_iter, process_file, build_vocab
+from data.cnews_loader import read_vocab, read_category, batch_iter, extra_result_file, process_file, build_vocab
 
 base_dir = 'data/cnews'
-train_dir = os.path.join(base_dir, 'cnews.train.txt')
-test_dir = os.path.join(base_dir, 'cnews.test.txt')
-val_dir = os.path.join(base_dir, 'cnews.val.txt')
-vocab_dir = os.path.join(base_dir, 'cnews.vocab.txt')
+# lei train_dir = os.path.join(base_dir, 'cnews.train.txt')
+train_dir = os.path.join(base_dir, 'lei_train_data.txt')
+test_dir = os.path.join(base_dir, 'show_data.txt')
+# test_dir = os.path.join(base_dir, 'lei_test_data.txt')
+val_dir = os.path.join(base_dir, 'lei_val_data.txt')
+vocab_dir = os.path.join(base_dir, 'cnews.train_vocab.txt')
 
 save_dir = 'checkpoints/textcnn'
 save_path = os.path.join(save_dir, 'best_validation')  # 最佳验证结果保存路径
@@ -92,7 +93,7 @@ def train():
     total_batch = 0  # 总批次
     best_acc_val = 0.0  # 最佳验证集准确率
     last_improved = 0  # 记录上一次提升批次
-    require_improvement = 1000  # 如果超过1000轮未提升，提前结束训练
+    require_improvement = 100  # 如果超过1000轮未提升，提前结束训练
 
     flag = False
     for epoch in range(config.num_epochs):
@@ -158,8 +159,10 @@ def test():
     data_len = len(x_test)
     num_batch = int((data_len - 1) / batch_size) + 1
 
+
     y_test_cls = np.argmax(y_test, 1)
     y_pred_cls = np.zeros(shape=len(x_test), dtype=np.int32)  # 保存预测结果
+
     for i in range(num_batch):  # 逐批次处理
         start_id = i * batch_size
         end_id = min((i + 1) * batch_size, data_len)
@@ -168,10 +171,12 @@ def test():
             model.keep_prob: 1.0
         }
         y_pred_cls[start_id:end_id] = session.run(model.y_pred_cls, feed_dict=feed_dict)
-
+    print("----------------------------")
+    print(y_pred_cls)
+    extra_result_file(test_dir, y_pred_cls)  # 将结果保存在文件中
     # 评估
     print("Precision, Recall and F1-Score...")
-    print(metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories))
+    #print(metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories))
 
     # 混淆矩阵
     print("Confusion Matrix...")
@@ -199,3 +204,15 @@ if __name__ == '__main__':
         train()
     else:
         test()
+# if __name__ == '__main__':
+#
+#     print('Configuring CNN model...')
+#     config = TCNNConfig()
+#     if not os.path.exists(vocab_dir):  # 如果不存在词汇表，重建
+#         build_vocab(train_dir, vocab_dir, config.vocab_size)
+#     categories, cat_to_id = read_category()
+#     words, word_to_id = read_vocab(vocab_dir)
+#     config.vocab_size = len(words)
+#     model = TextCNN(config)
+#     pd()
+#     test()

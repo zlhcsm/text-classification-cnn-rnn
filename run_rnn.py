@@ -63,9 +63,14 @@ def train():
     if not os.path.exists(tensorboard_dir):
         os.makedirs(tensorboard_dir)
 
+    # tf.summary.scalar 记录标量
     tf.summary.scalar("loss", model.loss)
     tf.summary.scalar("accuracy", model.acc)
+    # 创建的这些summary operations其实并不被其他节点依赖，
+    # 因此，我们需要特地去运行所有的summary节点
+    # 将所有summary节点合并成一个节点
     merged_summary = tf.summary.merge_all()
+    # 使用tf.summary.FileWriter将运行后输出的数据都保存到本地磁盘中
     writer = tf.summary.FileWriter(tensorboard_dir)
 
     # 配置 Saver
@@ -167,9 +172,10 @@ def test():
             model.keep_prob: 1.0
         }
         y_pred_cls[start_id:end_id] = session.run(model.y_pred_cls, feed_dict=feed_dict)
-
+    print("===========================")
+    print(y_pred_cls)
     # 评估
-    print("Precision, Recall and F1-Score...")
+    print("Precision, Recall and F1-Score...=================")
     print(metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories))
 
     # 混淆矩阵
@@ -182,8 +188,8 @@ def test():
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2 or sys.argv[1] not in ['train', 'test']:
-        raise ValueError("""usage: python run_rnn.py [train / test]""")
+    # if len(sys.argv) != 2 or sys.argv[1] not in ['train', 'test']:
+    #     raise ValueError("""usage: python run_rnn.py [train / test]""")
 
     print('Configuring RNN model...')
     config = TRNNConfig()
@@ -193,8 +199,8 @@ if __name__ == '__main__':
     words, word_to_id = read_vocab(vocab_dir)
     config.vocab_size = len(words)
     model = TextRNN(config)
-
     if sys.argv[1] == 'train':
         train()
     else:
         test()
+
