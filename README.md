@@ -1,5 +1,24 @@
+
 # 医学文本结构化  - 测试教程
 此工具包的结构化分类范围为：孕周、孕次、高危因素、胎位、结果、阿氏评分。
+
+# Tips:要测试功能务必请跳转至`char_achi`分支
+
+
+# Text Classification with CNN and RNN
+
+使用卷积神经网络以及循环神经网络进行中文文本分类
+
+CNN做句子分类的论文可以参看: [Convolutional Neural Networks for Sentence Classification](https://arxiv.org/abs/1408.5882)
+
+还可以去读dennybritz大牛的博客：[Implementing a CNN for Text Classification in TensorFlow](http://www.wildml.com/2015/12/implementing-a-cnn-for-text-classification-in-tensorflow/)
+
+以及字符级CNN的论文：[Character-level Convolutional Networks for Text Classification](https://arxiv.org/abs/1509.01626)
+
+本文是基于TensorFlow在中文数据集上的简化实现，使用了字符级CNN和RNN对中文文本进行分类，达到了较好的效果。
+
+文中所使用的Conv1D与论文中有些不同，详细参考官方文档：[tf.nn.conv1d](https://www.tensorflow.org/api_docs/python/tf/nn/conv1d)
+
 
 ## 环境
 
