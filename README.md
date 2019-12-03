@@ -31,7 +31,7 @@ CNN做句子分类的论文可以参看: [Convolutional Neural Networks for Sent
 
 ![images/jiaocheng1.png](images/jiaocheng1.png)
 
-## 最终结果
+## 最终结果(最外层的write.json文件中)
 ```python
 {'胎位':
  ['剖宫产', 'g/p', '枕左前剖宫产'],
