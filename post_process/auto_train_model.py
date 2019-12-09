@@ -23,6 +23,3 @@ def auto_system():
     print(line)
     # 启动定时器任务，每三秒执行一次
     Timer(3, auto_system).start()
-
-
-auto_system()

@@ -8,6 +8,9 @@ import tensorflow.keras as kr
 from collections import defaultdict
 import post_process as pp
 
+# Part5 用来处理结果数据
+
+
 if sys.version_info[0] > 2:
     is_py3 = True
 else:
@@ -140,7 +143,9 @@ def batch_iter(x, y, batch_size=64):
         yield x_shuffle[start_id:end_id], y_shuffle[start_id:end_id]
 
 
-# 用来处理结果数据
+
+
+######################################## Part5 用来处理结果数据 ########################################
 def extra_result_file(test_dir, y):
     get_data = []
     with open_file(test_dir) as f:
@@ -162,9 +167,7 @@ def extra_result_file(test_dir, y):
                 zipped[key].append(v)
         else:
             zipped[key].append(value)
-    print("--------------打印出zipped结果-------------")
-    print(zipped)
-    print("------------------OVER--------------------")
+
 
 
     with open('write.json', 'w', encoding="utf-8") as f:
