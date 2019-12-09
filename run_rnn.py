@@ -172,10 +172,9 @@ def test():
             model.keep_prob: 1.0
         }
         y_pred_cls[start_id:end_id] = session.run(model.y_pred_cls, feed_dict=feed_dict)
-    print("===========================")
     print(y_pred_cls)
     # 评估
-    print("Precision, Recall and F1-Score...=================")
+    print("Precision, Recall and F1-Score...")
     print(metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories))
 
     # 混淆矩阵
@@ -188,8 +187,8 @@ def test():
 
 
 if __name__ == '__main__':
-    # if len(sys.argv) != 2 or sys.argv[1] not in ['train', 'test']:
-    #     raise ValueError("""usage: python run_rnn.py [train / test]""")
+    if len(sys.argv) != 2 or sys.argv[1] not in ['train', 'test']:
+        raise ValueError("""usage: python run_rnn.py [train / test]""")
 
     print('Configuring RNN model...')
     config = TRNNConfig()
