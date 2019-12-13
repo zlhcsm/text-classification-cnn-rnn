@@ -6,9 +6,7 @@ import json
 import numpy as np
 import tensorflow.keras as kr
 from collections import defaultdict
-import post_process as pp
-
-# Part5 用来处理结果数据
+from post_process import process_classify as pc
 
 
 if sys.version_info[0] > 2:
@@ -145,30 +143,3 @@ def batch_iter(x, y, batch_size=64):
 
 
 
-######################################## Part5 用来处理结果数据 ########################################
-def extra_result_file(test_dir, y):
-    get_data = []
-    with open_file(test_dir) as f:
-        for line in f:
-            label, content = line.strip().split('\t')
-            get_data.append(content)
-    id_to_cate = id_to_category()
-    cate_list = []
-    for index in y:
-        cate_list.append(id_to_cate[str(index)])
-
-
-    # defaultdict类的初始化函数接受一个类型作为参数，当所访问的键不存在的时候，可以实例化一个值作为默认值
-    zipped = defaultdict(list)
-    for (key, value) in zip(cate_list, get_data):
-        if (key == "孕产次") | (key == "孕周")|(key == "阿氏评分"):
-            vals = pp.process_number(value)
-            for v in vals:
-                zipped[key].append(v)
-        else:
-            zipped[key].append(value)
-
-
-
-    with open('write.json', 'w', encoding="utf-8") as f:
-        json.dump(zipped, f, ensure_ascii=False)

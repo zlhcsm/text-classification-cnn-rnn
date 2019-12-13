@@ -25,8 +25,12 @@ def phrasing(par):
     return sentences
 
 
-# 用来生成可用的输入信息
 def gen_used_input(sen_list):
+    """
+    用来生成可用的输入信息
+    :param sen_list: 一系列分割好的句子
+    :return: 给句子初定一个类型
+    """
     with open('data/cnews/show_data.txt', 'w', encoding='utf8') as file_object:
         for sen in sen_list:
             file_object.write('孕产次')
@@ -34,8 +38,3 @@ def gen_used_input(sen_list):
             file_object.write(sen)
             file_object.write('\n')
 
-
-# print("结束于：" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
-
-# 测试
-# process_data()

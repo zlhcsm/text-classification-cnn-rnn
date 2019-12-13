@@ -12,7 +12,8 @@ import tensorflow as tf
 from sklearn import metrics
 from data.process_data import process_data as pd
 from cnn_model import TCNNConfig, TextCNN
-from data.cnews_loader import read_vocab, read_category, batch_iter, extra_result_file, process_file, build_vocab
+from data.cnews_loader import read_vocab, read_category, batch_iter, process_file, build_vocab
+from  post_process.merge_json import extra_result_file
 
 base_dir = 'data/cnews'
 # lei train_dir = os.path.join(base_dir, 'cnews.train.txt')
@@ -210,6 +211,7 @@ if __name__ == '__main__':
     config = TCNNConfig()
     if not os.path.exists(vocab_dir):  # 如果不存在词汇表，重建
         build_vocab(train_dir, vocab_dir, config.vocab_size)
+
     categories, cat_to_id = read_category()
     words, word_to_id = read_vocab(vocab_dir)
     config.vocab_size = len(words)
